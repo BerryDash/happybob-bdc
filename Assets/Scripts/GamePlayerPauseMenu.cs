@@ -12,11 +12,12 @@ public class GamePlayerPauseMenu : MonoBehaviour
     public AudioSource songLoop;
     public Slider musicSlider;
     public Slider sfxSlider;
+    public TMP_Text musicSliderText;
+    public TMP_Text sfxSliderText;
     public TMP_Text fpsText;
     public TMP_Text scoreText;
     public TMP_Text highScoreText;
     public TMP_Text boostText;
-    public TMP_Text coinsText;
     public Button pauseButton;
     public Button restartButton;
     public Button jumpButton;
@@ -53,12 +54,10 @@ public class GamePlayerPauseMenu : MonoBehaviour
             ((RectTransform)scoreText.transform).anchoredPosition = new Vector2(0f, -70f);
             ((RectTransform)highScoreText.transform).anchoredPosition = new Vector2(0f, -140f);
             ((RectTransform)boostText.transform).anchoredPosition = new Vector2(0f, -190f);
-            ((RectTransform)coinsText.transform).anchoredPosition = new Vector2(260f, 47.5f);
             PlayerPrefs.DeleteKey("DraggedUIFPSText");
             PlayerPrefs.DeleteKey("DraggedUIScoreText");
             PlayerPrefs.DeleteKey("DraggedUIHighScoreText");
             PlayerPrefs.DeleteKey("DraggedUIBoostText");
-            PlayerPrefs.DeleteKey("DraggedUICoinsText");
             if (Application.isMobilePlatform)
             {
                 ((RectTransform)pauseButton.transform).anchoredPosition = new Vector2(128f, -128f);
@@ -80,6 +79,8 @@ public class GamePlayerPauseMenu : MonoBehaviour
         editingUI = !editingUI;
         musicSlider.gameObject.SetActive(!musicSlider.gameObject.activeSelf);
         sfxSlider.gameObject.SetActive(!sfxSlider.gameObject.activeSelf);
+        musicSliderText.gameObject.SetActive(musicSlider.gameObject.activeSelf);
+        sfxSliderText.gameObject.SetActive(sfxSlider.gameObject.activeSelf);
         backButton.gameObject.SetActive(!backButton.gameObject.activeSelf);
         continueButton.gameObject.SetActive(!continueButton.gameObject.activeSelf);
         editUiButton.transform.GetChild(0).GetComponent<TMP_Text>().text = editUiButton.transform.GetChild(0).GetComponent<TMP_Text>().text == "Edit UI" ? "Done" : "Edit UI";
@@ -88,7 +89,6 @@ public class GamePlayerPauseMenu : MonoBehaviour
         scoreText.GetComponent<DraggableUI>().canDrag = !scoreText.GetComponent<DraggableUI>().canDrag;
         highScoreText.GetComponent<DraggableUI>().canDrag = !highScoreText.GetComponent<DraggableUI>().canDrag;
         boostText.GetComponent<DraggableUI>().canDrag = !boostText.GetComponent<DraggableUI>().canDrag;
-        coinsText.GetComponent<DraggableUI>().canDrag = !coinsText.GetComponent<DraggableUI>().canDrag;
         if (Application.isMobilePlatform)
         {
             var pauseDraggableUI = pauseButton.GetComponent<DraggableUI>();

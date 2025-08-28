@@ -1432,6 +1432,8 @@ MonoBehaviour:
   songLoop: {fileID: 1625416039}
   musicSlider: {fileID: 208042169}
   sfxSlider: {fileID: 604620478}
+  musicSliderText: {fileID: 1859415099}
+  sfxSliderText: {fileID: 699129040}
   fpsText: {fileID: 83812371}
   scoreText: {fileID: 432923591}
   highScoreText: {fileID: 1606868532}
