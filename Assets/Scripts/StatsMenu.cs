@@ -16,6 +16,7 @@ public class StatsMenu : MonoBehaviour
         text.AppendLine("Total Ultra Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalUltraBerries()));
         text.AppendLine("Total Speedy Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalSpeedyBerries()));
         text.AppendLine("Total Time Slow Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalTimeSlowBerries()));
+        text.AppendLine("Total Purple Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalPurpleBerries()));
         text.AppendLine("Total Attempts: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalAttepts()));
         statText.text = text.ToString();
     }

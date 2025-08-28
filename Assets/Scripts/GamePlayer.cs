@@ -19,6 +19,7 @@ public class GamePlayer : MonoBehaviour
     private BigInteger totalUltraBerries;
     private BigInteger totalSpeedyBerries;
     private BigInteger totalTimeSlowBerries;
+    private BigInteger totalPurpleBerries;
     private BigInteger totalAttempts;
     private float boostLeft;
     private float timeslowLeft;
@@ -318,16 +319,23 @@ public class GamePlayer : MonoBehaviour
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/UltraBerry");
                 newBerry.tag = "UltraBerry";
             }
-            else if (spawnProbability <= 0.95f)
+            else if (spawnProbability <= 0.94f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/SpeedyBerry");
                 newBerry.tag = "SpeedyBerry";
+            }
+            else if (spawnProbability <= 0.97f)
+            {
+                spriteRenderer.sprite = Resources.Load<Sprite>("Berries/PurpleBerry");
+                newBerry.tag = "PurpleBerry";
             }
             else
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/TimeSlowBerry");
                 newBerry.tag = "TimeSlowBerry";
             }
+
+
 
             spriteRenderer.sortingOrder = -5;
 
@@ -360,6 +368,7 @@ public class GamePlayer : MonoBehaviour
         GameObject[] ultraBerries = GameObject.FindGameObjectsWithTag("UltraBerry");
         GameObject[] speedyBerries = GameObject.FindGameObjectsWithTag("SpeedyBerry");
         GameObject[] timeslowBerries = GameObject.FindGameObjectsWithTag("TimeSlowBerry");
+        GameObject[] purpleBerries = GameObject.FindGameObjectsWithTag("PurpleBerry");
 
         if (!pausePanel.activeSelf)
         {
@@ -550,6 +559,32 @@ public class GamePlayer : MonoBehaviour
                     timeslowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
                 }
             }
+            foreach (GameObject purpleBerry in purpleBerries)
+            {
+                if (purpleBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
+                {
+                    Destroy(purpleBerry);
+                }
+                else if (UnityEngine.Vector3.Distance(bird.transform.position, purpleBerry.transform.position) < 1.5f)
+                {
+                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/Eat"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
+                    Destroy(purpleBerry);
+                    totalPurpleBerries++;
+                    UpdateStats(15, 0);
+                }
+                if (speedyLeft > 0)
+                {
+                    purpleBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
+                }
+                else if (timeslowLeft > 0)
+                {
+                    purpleBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -2f);
+                }
+                else
+                {
+                    purpleBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
+                }
+            }
         }
         else
         {
@@ -561,6 +596,7 @@ public class GamePlayer : MonoBehaviour
                 .Concat(ultraBerries)
                 .Concat(speedyBerries)
                 .Concat(timeslowBerries)
+                .Concat(purpleBerries)
                 .ToArray();
             foreach (GameObject berry in allberries)
             {
@@ -589,6 +625,7 @@ public class GamePlayer : MonoBehaviour
             .Concat(GameObject.FindGameObjectsWithTag("UltraBerry"))
             .Concat(GameObject.FindGameObjectsWithTag("SpeedyBerry"))
             .Concat(GameObject.FindGameObjectsWithTag("TimeSlowBerry"))
+            .Concat(GameObject.FindGameObjectsWithTag("PurpleBerry"))
             .ToArray();
         foreach (GameObject berry in allberries)
         {
@@ -612,6 +649,7 @@ public class GamePlayer : MonoBehaviour
         BazookaManager.Instance.SetGameStoreTotalUltraBerries(totalUltraBerries);
         BazookaManager.Instance.SetGameStoreTotalSpeedyBerries(totalSpeedyBerries);
         BazookaManager.Instance.SetGameStoreTotalTimeSlowBerries(totalTimeSlowBerries);
+        BazookaManager.Instance.SetGameStoreTotalPurpleBerries(totalPurpleBerries);
         BazookaManager.Instance.SetGameStoreTotalAttepts(totalAttempts);
         scoreText.text = $"Score: {Tools.FormatWithCommas(score)} \\u2022 Attempts: {Tools.FormatWithCommas(attempts)}";
         highScoreText.text = $"High Score: {Tools.FormatWithCommas(highscore)} \\u2022 Total Attempts: {Tools.FormatWithCommas(totalAttempts)}";
