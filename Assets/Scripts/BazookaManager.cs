@@ -1,5 +1,6 @@
 using System.IO;
 using System.Numerics;
+using System.Text;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -45,7 +46,7 @@ public class BazookaManager : MonoBehaviour
 
     public void Load()
     {
-        string path = Path.Join(Application.persistentDataPath, SensitiveInfo.BAZOOKA_MANAGER_FILE_KEY + ".dat");
+        string path = Path.Join(Application.persistentDataPath, "save.dat");
         if (!File.Exists(path))
         {
             File.Create(path).Dispose();
@@ -54,7 +55,7 @@ public class BazookaManager : MonoBehaviour
         {
             try
             {
-                var tempSaveFile = JObject.Parse(SensitiveInfo.DecryptRaw(File.ReadAllBytes(path), SensitiveInfo.BAZOOKA_MANAGER_KEY));
+                var tempSaveFile = JObject.Parse(File.ReadAllText(path));
                 if (tempSaveFile != null) saveFile = tempSaveFile;
             }
             catch
@@ -66,319 +67,6 @@ public class BazookaManager : MonoBehaviour
         {
             saveFile["version"] = "0";
         }
-        if (!PlayerPrefs.HasKey("LegacyConversion"))
-        {
-            PlayerPrefs.SetInt("LegacyConversion", 1);
-            if (PlayerPrefs.HasKey("HighScoreV2"))
-            {
-                try
-                {
-                    SetGameStoreHighScore(BigInteger.Parse(PlayerPrefs.GetString("HighScoreV2", "0")));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate HighScoreV2 to new save format");
-                }
-                PlayerPrefs.DeleteKey("HighScoreV2");
-            }
-            if (PlayerPrefs.HasKey("TotalNormalBerries"))
-            {
-                try
-                {
-                    SetGameStoreTotalNormalBerries(BigInteger.Parse(PlayerPrefs.GetString("TotalNormalBerries", "0")));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate TotalNormalBerries to new save format");
-                }
-                PlayerPrefs.DeleteKey("TotalNormalBerries");
-            }
-            if (PlayerPrefs.HasKey("TotalPoisonBerries"))
-            {
-                try
-                {
-                    SetGameStoreTotalPoisonBerries(BigInteger.Parse(PlayerPrefs.GetString("TotalPoisonBerries", "0")));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate TotalPoisonBerries to new save format");
-                }
-                PlayerPrefs.DeleteKey("TotalPoisonBerries");
-            }
-            if (PlayerPrefs.HasKey("TotalSlowBerries"))
-            {
-                try
-                {
-                    SetGameStoreTotalSlowBerries(BigInteger.Parse(PlayerPrefs.GetString("TotalSlowBerries", "0")));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate TotalSlowBerries to new save format");
-                }
-                PlayerPrefs.DeleteKey("TotalSlowBerries");
-            }
-            if (PlayerPrefs.HasKey("TotalUltraBerries"))
-            {
-                try
-                {
-                    SetGameStoreTotalUltraBerries(BigInteger.Parse(PlayerPrefs.GetString("TotalUltraBerries", "0")));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate TotalUltraBerries to new save format");
-                }
-                PlayerPrefs.DeleteKey("TotalUltraBerries");
-            }
-            if (PlayerPrefs.HasKey("TotalSpeedyBerries"))
-            {
-                try
-                {
-                    SetGameStoreTotalSpeedyBerries(BigInteger.Parse(PlayerPrefs.GetString("TotalSpeedyBerries", "0")));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate TotalSpeedyBerries to new save format");
-                }
-                PlayerPrefs.DeleteKey("TotalSpeedyBerries");
-            }
-            if (PlayerPrefs.HasKey("TotalAttempts"))
-            {
-                try
-                {
-                    SetGameStoreTotalAttepts(BigInteger.Parse(PlayerPrefs.GetString("TotalAttempts", "0")));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate TotalAttempts to new save format");
-                }
-                PlayerPrefs.DeleteKey("TotalAttempts");
-            }
-            if (PlayerPrefs.HasKey("pastOverlay"))
-            {
-                PlayerPrefs.DeleteKey("pastOverlay");
-            }
-            if (PlayerPrefs.HasKey("gameSession") && PlayerPrefs.GetString("gameSession") != null && PlayerPrefs.GetString("gameSession").Length == 512)
-            {
-                try
-                {
-                    SetAccountSession(PlayerPrefs.GetString("gameSession"));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate gameSession to new save format");
-                }
-                PlayerPrefs.DeleteKey("gameSession");
-            }
-            if (PlayerPrefs.HasKey("userName"))
-            {
-                try
-                {
-                    SetAccountSession(PlayerPrefs.GetString("userName"));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate userName to new save format");
-                }
-                PlayerPrefs.DeleteKey("userName");
-            }
-            if (PlayerPrefs.HasKey("userId"))
-            {
-                try
-                {
-                    SetAccountID(PlayerPrefs.GetInt("userId", 0));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate userId to new save format");
-                }
-                PlayerPrefs.DeleteKey("userId");
-            }
-            if (PlayerPrefs.HasKey("userId"))
-            {
-                try
-                {
-                    SetAccountID(PlayerPrefs.GetInt("userId", 0));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate userId to new save format");
-                }
-                PlayerPrefs.DeleteKey("userId");
-            }
-            if (PlayerPrefs.HasKey("musicVolume"))
-            {
-                try
-                {
-                    SetSettingMusicVolume(PlayerPrefs.GetFloat("musicVolume", 1f));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate musicVolume to new save format");
-                }
-                PlayerPrefs.DeleteKey("musicVolume");
-            }
-            if (PlayerPrefs.HasKey("sfxVolume"))
-            {
-                try
-                {
-                    SetSettingSFXVolume(PlayerPrefs.GetFloat("sfxVolume", 1f));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate sfxVolume to new save format");
-                }
-                PlayerPrefs.DeleteKey("sfxVolume");
-            }
-            if (PlayerPrefs.HasKey("BirdColor"))
-            {
-                try
-                {
-                    var birdColor = PlayerPrefs.GetString("BirdColor", "255;255;255").Split(";");
-                    SetColorSettingIcon(new JArray(birdColor[0], birdColor[1], birdColor[2]));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate BirdColor to new save format");
-                }
-                PlayerPrefs.DeleteKey("BirdColor");
-            }
-            if (PlayerPrefs.HasKey("OverlayColor"))
-            {
-                try
-                {
-                    var overlayColor = PlayerPrefs.GetString("OverlayColor", "255;255;255").Split(";");
-                    SetColorSettingOverlay(new JArray(overlayColor[0], overlayColor[1], overlayColor[2]));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate OverlayColor to new save format");
-                }
-                PlayerPrefs.DeleteKey("OverlayColor");
-            }
-            if (PlayerPrefs.HasKey("OverlayColor"))
-            {
-                try
-                {
-                    var overlayColor = PlayerPrefs.GetString("OverlayColor", "255;255;255").Split(";");
-                    SetColorSettingOverlay(new JArray(overlayColor[0], overlayColor[1], overlayColor[2]));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate OverlayColor to new save format");
-                }
-                PlayerPrefs.DeleteKey("OverlayColor");
-            }
-            if (PlayerPrefs.HasKey("BackgroundColor"))
-            {
-                try
-                {
-                    var bgColor = PlayerPrefs.GetString("BackgroundColor", "58;58;58").Split(";");
-                    SetColorSettingOverlay(new JArray(bgColor[0], bgColor[1], bgColor[2]));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate BackgroundColor to new save format");
-                }
-                PlayerPrefs.DeleteKey("BackgroundColor");
-            }
-            if (PlayerPrefs.HasKey("BackgroundColor"))
-            {
-                try
-                {
-                    var bgColor = PlayerPrefs.GetString("BackgroundColor", "58;58;58").Split(";");
-                    SetColorSettingOverlay(new JArray(bgColor[0], bgColor[1], bgColor[2]));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate BackgroundColor to new save format");
-                }
-                PlayerPrefs.DeleteKey("BackgroundColor");
-            }
-            if (PlayerPrefs.HasKey("icon"))
-            {
-                try
-                {
-                    SetBirdIcon(PlayerPrefs.GetInt("icon", 1));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate icon to new save format");
-                }
-                PlayerPrefs.DeleteKey("icon");
-            }
-            if (PlayerPrefs.HasKey("overlay"))
-            {
-                try
-                {
-                    SetBirdOverlay(PlayerPrefs.GetInt("overlay", 1));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate overlay to new save format");
-                }
-                PlayerPrefs.DeleteKey("overlay");
-            }
-            if (PlayerPrefs.HasKey("overlay"))
-            {
-                try
-                {
-                    SetBirdOverlay(PlayerPrefs.GetInt("overlay", 1));
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate overlay to new save format");
-                }
-                PlayerPrefs.DeleteKey("overlay");
-            }
-            if (PlayerPrefs.HasKey("Setting1"))
-            {
-                try
-                {
-                    SetSettingFullScreen(PlayerPrefs.GetInt("Setting1", 1) == 1);
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate Setting1 to new save format");
-                }
-                PlayerPrefs.DeleteKey("Setting1");
-            }
-            if (PlayerPrefs.HasKey("Setting2"))
-            {
-                try
-                {
-                    SetSettingShowFPS(PlayerPrefs.GetInt("Setting2", 1) == 1);
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate Setting2 to new save format");
-                }
-                PlayerPrefs.DeleteKey("Setting2");
-            }
-            if (PlayerPrefs.HasKey("Setting3"))
-            {
-                try
-                {
-                    SetSettingVsync(PlayerPrefs.GetInt("Setting3", 1) == 1);
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate Setting3 to new save format");
-                }
-                PlayerPrefs.DeleteKey("Setting3");
-            }
-            if (PlayerPrefs.HasKey("Setting4"))
-            {
-                try
-                {
-                    SetSettingHideSocials(PlayerPrefs.GetInt("Setting4", 1) == 1);
-                }
-                catch
-                {
-                    Debug.LogError("Failed to migrate Setting4 to new save format");
-                }
-                PlayerPrefs.DeleteKey("Setting4");
-            }
-        }
     }
 
     public void Save()
@@ -386,9 +74,8 @@ public class BazookaManager : MonoBehaviour
 #if UNITY_EDITOR
         return;
 #else
-        string path = Path.Join(Application.persistentDataPath, SensitiveInfo.BAZOOKA_MANAGER_FILE_KEY + ".dat");
-        var encoded = SensitiveInfo.EncryptRaw(saveFile.ToString(Newtonsoft.Json.Formatting.None), SensitiveInfo.BAZOOKA_MANAGER_KEY);
-        if (encoded == null) return;
+        string path = Path.Join(Application.persistentDataPath, "save.dat");
+        var encoded = Encoding.UTF8.GetBytes(saveFile.ToString());
         using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
         fileStream.Write(encoded, 0, encoded.Length);
         fileStream.Flush(true);

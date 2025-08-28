@@ -11,10 +11,6 @@ public class MenuScript : MonoBehaviour
 
     void Awake()
     {
-        LatestVersionText.Instance.text = updateText;
-        LatestVersionText.Instance.updateButton = updateButton;
-        LatestVersionText.Instance.RefreshText();
-
         if (Application.isMobilePlatform || Application.isEditor)
         {
             exitButton.gameObject.SetActive(false);
@@ -26,6 +22,5 @@ public class MenuScript : MonoBehaviour
                 Application.Quit();
             });
         }
-        
     }
 }

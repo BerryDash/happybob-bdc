@@ -7,6 +7,6 @@ public class VersionText : MonoBehaviour
     void Awake()
     {
         text = gameObject.GetComponent<TMP_Text>();
-        text.text = "Current: v" + Application.version;
+        text.text = "v" + Application.version;
     }
 }

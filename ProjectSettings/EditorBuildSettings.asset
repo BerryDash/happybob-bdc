@@ -12,23 +12,11 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/AccountMenu.unity
-    guid: 61d560f45a39646489a33d9e871b5336
-  - enabled: 1
-    path: Assets/Scenes/ChatroomMenu.unity
-    guid: 6d51f8ef1f7d4f01a8416e468a7ed278
-  - enabled: 1
     path: Assets/Scenes/GamePlayer.unity
     guid: 8d9f90781cae8d24c8560dbca7ed6f42
   - enabled: 1
-    path: Assets/Scenes/IconMarketplaceMenu.unity
-    guid: 88bad8620907810c097277153f83e44c
-  - enabled: 1
     path: Assets/Scenes/IconsMenu.unity
     guid: 93c5a1ee608d5b04dbdb5348ba79b654
-  - enabled: 1
-    path: Assets/Scenes/LeaderboardMenu.unity
-    guid: 7cac5956257281848842dff97b10124b
   - enabled: 1
     path: Assets/Scenes/SettingsMenu.unity
     guid: 82b6fbd13818d174fbcda658514d0cf4
