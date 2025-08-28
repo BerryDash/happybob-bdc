@@ -1438,7 +1438,6 @@ MonoBehaviour:
   scoreText: {fileID: 432923591}
   highScoreText: {fileID: 1606868532}
   boostText: {fileID: 497996347}
-  coinsText: {fileID: 0}
   pauseButton: {fileID: 1577031227}
   restartButton: {fileID: 34767206}
   jumpButton: {fileID: 293594129}

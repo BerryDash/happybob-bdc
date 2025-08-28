@@ -5,9 +5,6 @@ using UnityEngine.UI;
 public class MenuScript : MonoBehaviour
 {
     public Button exitButton;
-    public TMP_Text updateText;
-    public Button updateButton;
-    public GameObject selfBuiltPanel;
 
     void Awake()
     {

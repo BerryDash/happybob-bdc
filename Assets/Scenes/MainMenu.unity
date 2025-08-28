@@ -584,7 +584,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: epic modded berry dash thing idk
+  m_text: idk why i made this
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4fd546dd0900395408d2de20f5025882, type: 2}
   m_sharedMaterial: {fileID: -1476194838487357290, guid: 4fd546dd0900395408d2de20f5025882, type: 2}
@@ -997,9 +997,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exitButton: {fileID: 1354600018}
-  updateText: {fileID: 0}
-  updateButton: {fileID: 0}
-  selfBuiltPanel: {fileID: 0}
 --- !u!1 &730199461
 GameObject:
   m_ObjectHideFlags: 0
