@@ -18,9 +18,8 @@ public class GamePlayer : MonoBehaviour
     private BigInteger totalSlowBerries;
     private BigInteger totalUltraBerries;
     private BigInteger totalSpeedyBerries;
-    private BigInteger totalCoinBerries;
+    private BigInteger totalTimeSlowBerries;
     private BigInteger totalAttempts;
-    private BigInteger totalCoins;
     private float boostLeft;
     private float timeslowLeft;
     private float slownessLeft;
@@ -30,7 +29,6 @@ public class GamePlayer : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text highScoreText;
     public TMP_Text boostText;
-    public TMP_Text coinText;
     public GameObject bird;
     public GameObject pausePanel;
     public Rigidbody2D rb;
@@ -58,76 +56,59 @@ public class GamePlayer : MonoBehaviour
             int.Parse(backgroundColor[2].ToString()) / 255f
         );
 
-        var customIconData = BazookaManager.Instance.GetCustomBirdIconData();
         SpriteRenderer component = bird.GetComponent<SpriteRenderer>();
-        if (customIconData.Selected == null)
-        {
-            var birdColor = BazookaManager.Instance.GetColorSettingIcon();
-            var overlayColor = BazookaManager.Instance.GetColorSettingOverlay();
-            bird.GetComponent<SpriteRenderer>().color = new Color(
-                int.Parse(birdColor[0].ToString()) / 255f,
-                int.Parse(birdColor[1].ToString()) / 255f,
-                int.Parse(birdColor[2].ToString()) / 255f
-            );
-            bird.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(
-                int.Parse(overlayColor[0].ToString()) / 255f,
-                int.Parse(overlayColor[1].ToString()) / 255f,
-                int.Parse(overlayColor[2].ToString()) / 255f
-            );
+        var birdColor = BazookaManager.Instance.GetColorSettingIcon();
+        var overlayColor = BazookaManager.Instance.GetColorSettingOverlay();
+        bird.GetComponent<SpriteRenderer>().color = new Color(
+            int.Parse(birdColor[0].ToString()) / 255f,
+            int.Parse(birdColor[1].ToString()) / 255f,
+            int.Parse(birdColor[2].ToString()) / 255f
+        );
+        bird.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(
+            int.Parse(overlayColor[0].ToString()) / 255f,
+            int.Parse(overlayColor[1].ToString()) / 255f,
+            int.Parse(overlayColor[2].ToString()) / 255f
+        );
 
-            int num = BazookaManager.Instance.GetBirdIcon();
-            int num2 = BazookaManager.Instance.GetBirdOverlay();
-            if (num == 1)
-            {
-                component.sprite = Tools.GetIconForUser(BazookaManager.Instance.GetAccountID() ?? 0);
-            }
-            else
-            {
-                component.sprite = Resources.Load<Sprite>("Icons/Icons/bird_" + num);
-            }
-            if (num2 == 8)
-            {
-                overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_" + num2);
-                overlayRender.transform.localPosition = new UnityEngine.Vector3(-0.37f, 0.32f, 0f);
-            }
-            else if (num2 == 11)
-            {
-                overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_" + num2);
-                overlayRender.transform.localScale = new UnityEngine.Vector3(1.1f, 1.1f, 1.1f); //yea i didnt feel like doing it for all lmao
-                overlayRender.transform.localPosition = new UnityEngine.Vector3(-0.3141809f, 0.4324968f, 0f);
-            }
-            else if (num2 == 13)
-            {
-                overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_" + num2);
-                overlayRender.transform.localPosition = new UnityEngine.Vector3(-0.3559977f, 0.3179995f, 0f);
-            }
-            else
-            {
-                overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_" + num2);
-            }
-            if (component.sprite == null)
-            {
-                component.sprite = Resources.Load<Sprite>("Icons/Icons/bird_1");
-                BazookaManager.Instance.SetBirdIcon(1);
-            }
-            if (overlayRender.sprite == null && num2 != 0)
-            {
-                overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_1");
-                BazookaManager.Instance.SetBirdOverlay(1);
-            }
+        int num = BazookaManager.Instance.GetBirdIcon();
+        int num2 = BazookaManager.Instance.GetBirdOverlay();
+        if (num == 1)
+        {
+            component.sprite = Tools.GetIconForUser(BazookaManager.Instance.GetAccountID() ?? 0);
         }
         else
         {
-            if (customIconData.Selected != null)
-            {
-                foreach (var icon in customIconData.Data)
-                {
-                    if (icon.UUID == customIconData.Selected)
-                    {
-                        Tools.RenderFromBase64(icon.Data, component);
-                    }
-                }
-            }
+            component.sprite = Resources.Load<Sprite>("Icons/Icons/bird_" + num);
+        }
+        if (num2 == 8)
+        {
+            overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_" + num2);
+            overlayRender.transform.localPosition = new UnityEngine.Vector3(-0.37f, 0.32f, 0f);
+        }
+        else if (num2 == 11)
+        {
+            overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_" + num2);
+            overlayRender.transform.localScale = new UnityEngine.Vector3(1.1f, 1.1f, 1.1f); //yea i didnt feel like doing it for all lmao
+            overlayRender.transform.localPosition = new UnityEngine.Vector3(-0.3141809f, 0.4324968f, 0f);
+        }
+        else if (num2 == 13)
+        {
+            overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_" + num2);
+            overlayRender.transform.localPosition = new UnityEngine.Vector3(-0.3559977f, 0.3179995f, 0f);
+        }
+        else
+        {
+            overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_" + num2);
+        }
+        if (component.sprite == null)
+        {
+            component.sprite = Resources.Load<Sprite>("Icons/Icons/bird_1");
+            BazookaManager.Instance.SetBirdIcon(1);
+        }
+        if (overlayRender.sprite == null && num2 != 0)
+        {
+            overlayRender.sprite = Resources.Load<Sprite>("Icons/Overlays/overlay_1");
+            BazookaManager.Instance.SetBirdOverlay(1);
         }
 
         lastMoveTime = Time.time;
@@ -139,9 +120,8 @@ public class GamePlayer : MonoBehaviour
         totalSlowBerries = BazookaManager.Instance.GetGameStoreTotalSlowBerries();
         totalUltraBerries = BazookaManager.Instance.GetGameStoreTotalUltraBerries();
         totalSpeedyBerries = BazookaManager.Instance.GetGameStoreTotalSpeedyBerries();
-        totalCoinBerries = BazookaManager.Instance.GetGameStoreTotalCoinBerries();
+        totalTimeSlowBerries = BazookaManager.Instance.GetGameStoreTotalTimeSlowBerries();
         totalAttempts = BazookaManager.Instance.GetGameStoreTotalAttepts();
-        totalCoins = BazookaManager.Instance.GetCustomBirdIconData().Balance;
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -343,15 +323,10 @@ public class GamePlayer : MonoBehaviour
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/SpeedyBerry");
                 newBerry.tag = "SpeedyBerry";
             }
-            else if (spawnProbability <= 0.99f)
+            else
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/TimeSlowBerry");
                 newBerry.tag = "TimeSlowBerry";
-            }
-            else
-            {
-                spriteRenderer.sprite = Resources.Load<Sprite>("Berries/CoinBerry");
-                newBerry.tag = "CoinBerry";
             }
 
             spriteRenderer.sortingOrder = -5;
@@ -385,7 +360,6 @@ public class GamePlayer : MonoBehaviour
         GameObject[] ultraBerries = GameObject.FindGameObjectsWithTag("UltraBerry");
         GameObject[] speedyBerries = GameObject.FindGameObjectsWithTag("SpeedyBerry");
         GameObject[] timeslowBerries = GameObject.FindGameObjectsWithTag("TimeSlowBerry");
-        GameObject[] coinBerries = GameObject.FindGameObjectsWithTag("CoinBerry");
 
         if (!pausePanel.activeSelf)
         {
@@ -560,7 +534,7 @@ public class GamePlayer : MonoBehaviour
                     boostLeft = 0f;
                     speedyLeft = 0f;
                     timeslowLeft = 10f;
-                    totalNormalBerries++;
+                    totalTimeSlowBerries++;
                     UpdateStats(1, 0);
                 }
                 if (speedyLeft > 0)
@@ -576,33 +550,6 @@ public class GamePlayer : MonoBehaviour
                     timeslowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
                 }
             }
-            foreach (GameObject coinBerry in coinBerries)
-            {
-                if (coinBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
-                {
-                    Destroy(coinBerry);
-                }
-                else if (UnityEngine.Vector3.Distance(bird.transform.position, coinBerry.transform.position) < 1.5f)
-                {
-                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/CoinCollect"), Camera.main.transform.position, 0.35f * BazookaManager.Instance.GetSettingSFXVolume());
-                    Destroy(coinBerry);
-                    totalCoinBerries++;
-                    totalCoins += 10;
-                    UpdateStats(0, 0);
-                }
-                if (speedyLeft > 0)
-                {
-                    coinBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
-                }
-                else if (timeslowLeft > 0)
-                {
-                    coinBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -2f);
-                }
-                else
-                {
-                    coinBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
-                }
-            }
         }
         else
         {
@@ -614,7 +561,6 @@ public class GamePlayer : MonoBehaviour
                 .Concat(ultraBerries)
                 .Concat(speedyBerries)
                 .Concat(timeslowBerries)
-                .Concat(coinBerries)
                 .ToArray();
             foreach (GameObject berry in allberries)
             {
@@ -643,7 +589,6 @@ public class GamePlayer : MonoBehaviour
             .Concat(GameObject.FindGameObjectsWithTag("UltraBerry"))
             .Concat(GameObject.FindGameObjectsWithTag("SpeedyBerry"))
             .Concat(GameObject.FindGameObjectsWithTag("TimeSlowBerry"))
-            .Concat(GameObject.FindGameObjectsWithTag("CoinBerry"))
             .ToArray();
         foreach (GameObject berry in allberries)
         {
@@ -666,14 +611,10 @@ public class GamePlayer : MonoBehaviour
         BazookaManager.Instance.SetGameStoreTotalSlowBerries(totalSlowBerries);
         BazookaManager.Instance.SetGameStoreTotalUltraBerries(totalUltraBerries);
         BazookaManager.Instance.SetGameStoreTotalSpeedyBerries(totalSpeedyBerries);
-        BazookaManager.Instance.SetGameStoreTotalCoinBerries(totalCoinBerries);
+        BazookaManager.Instance.SetGameStoreTotalTimeSlowBerries(totalTimeSlowBerries);
         BazookaManager.Instance.SetGameStoreTotalAttepts(totalAttempts);
-        var customBirdIconData = BazookaManager.Instance.GetCustomBirdIconData();
-        customBirdIconData.Balance = totalCoins;
-        BazookaManager.Instance.SetCustomBirdIconData(customBirdIconData);
         scoreText.text = $"Score: {Tools.FormatWithCommas(score)} \\u2022 Attempts: {Tools.FormatWithCommas(attempts)}";
         highScoreText.text = $"High Score: {Tools.FormatWithCommas(highscore)} \\u2022 Total Attempts: {Tools.FormatWithCommas(totalAttempts)}";
-        coinText.text = $"Coins: {Tools.FormatWithCommas(totalCoins)}";
         if (Application.isMobilePlatform) restartButton.interactable = score != 0;
     }
 

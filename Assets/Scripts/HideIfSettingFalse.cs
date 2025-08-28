@@ -15,7 +15,6 @@ public class HideIfSettingFalse : MonoBehaviour {
             SettingTypes.FullScreen => b.GetSettingFullScreen(),
             SettingTypes.ShowFPS => b.GetSettingShowFPS(),
             SettingTypes.Vsync => b.GetSettingVsync(),
-            SettingTypes.HideSocials => b.GetSettingHideSocials() ?? false,
             _ => false
         };
     }

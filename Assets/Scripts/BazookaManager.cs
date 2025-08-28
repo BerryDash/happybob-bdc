@@ -132,26 +132,6 @@ public class BazookaManager : MonoBehaviour
         if (saveFile["bird"]["overlay"] == null) return 0;
         return int.Parse(saveFile["bird"]["overlay"].ToString());
     }
-    
-    public void SetCustomBirdIconData(MarketplaceIconStorageType value)
-    {
-        if (saveFile["bird"] == null) saveFile["bird"] = new JObject();
-        saveFile["bird"]["customIcon"] = JObject.FromObject(value);
-    }
-
-    public void UnsetCustomBirdIconData()
-    {
-        if (saveFile["bird"] == null) return;
-        if (saveFile["bird"]["customIcon"] == null) return;
-        (saveFile["bird"] as JObject)?.Remove("customIcon");
-    }
-
-    public MarketplaceIconStorageType GetCustomBirdIconData()
-    {
-        if (saveFile["bird"] == null) return new();
-        if (saveFile["bird"]["customIcon"] == null) return new();
-        return saveFile["bird"]["customIcon"].ToObject<MarketplaceIconStorageType>();
-    }
 
     //Settings stuff
 
@@ -192,19 +172,6 @@ public class BazookaManager : MonoBehaviour
         if (saveFile["settings"] == null) return true;
         if (saveFile["settings"]["vsync"] == null) return true;
         return bool.Parse(saveFile["settings"]["vsync"].ToString());
-    }
-
-    public void SetSettingHideSocials(bool value)
-    {
-        if (saveFile["settings"] == null) saveFile["settings"] = new JObject();
-        saveFile["settings"]["hideSocials"] = value;
-    }
-
-    public bool? GetSettingHideSocials()
-    {
-        if (saveFile["settings"] == null) return null;
-        if (saveFile["settings"]["hideSocials"] == null) return null;
-        return bool.Parse(saveFile["settings"]["hideSocials"].ToString());
     }
 
     public void SetSettingMusicVolume(float value)
@@ -488,22 +455,22 @@ public class BazookaManager : MonoBehaviour
         (saveFile["gameStore"] as JObject)?.Remove("totalSpeedyBerries");
     }
 
-    public void SetGameStoreTotalCoinBerries(BigInteger value)
+    public void SetGameStoreTotalTimeSlowBerries(BigInteger value)
     {
         if (saveFile["gameStore"] == null) saveFile["gameStore"] = new JObject();
-        saveFile["gameStore"]["totalCoinBerries"] = value.ToString();
+        saveFile["gameStore"]["totalTimeSlowBerries"] = value.ToString();
     }
 
-    public BigInteger GetGameStoreTotalCoinBerries()
+    public BigInteger GetGameStoreTotalTimeSlowBerries()
     {
         if (saveFile["gameStore"] == null) return 0;
-        if (saveFile["gameStore"]["totalCoinBerries"] == null) return 0;
-        return BigInteger.Parse(saveFile["gameStore"]["totalCoinBerries"].ToString());
+        if (saveFile["gameStore"]["totalTimeSlowBerries"] == null) return 0;
+        return BigInteger.Parse(saveFile["gameStore"]["totalTimeSlowBerries"].ToString());
     }
 
-    public void UnsetGameStoreTotalCoinBerries()
+    public void UnsetGameStoreTotalTimeSlowBerries()
     {
         if (saveFile["gameStore"] == null) return;
-        (saveFile["gameStore"] as JObject)?.Remove("totalCoinBerries");
+        (saveFile["gameStore"] as JObject)?.Remove("totalTimeSlowBerries");
     }
 }

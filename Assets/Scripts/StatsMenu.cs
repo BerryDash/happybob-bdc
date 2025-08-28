@@ -15,8 +15,7 @@ public class StatsMenu : MonoBehaviour
         text.AppendLine("Total Slow Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalSlowBerries()));
         text.AppendLine("Total Ultra Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalUltraBerries()));
         text.AppendLine("Total Speedy Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalSpeedyBerries()));
-        text.AppendLine("Total Coin Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalCoinBerries()));
-        text.AppendLine("Total Coins: " + Tools.FormatWithCommas(BazookaManager.Instance.GetCustomBirdIconData().Balance));
+        text.AppendLine("Total Time Slow Berries: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalTimeSlowBerries()));
         text.AppendLine("Total Attempts: " + Tools.FormatWithCommas(BazookaManager.Instance.GetGameStoreTotalAttepts()));
         statText.text = text.ToString();
     }
