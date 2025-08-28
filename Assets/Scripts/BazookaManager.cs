@@ -46,7 +46,7 @@ public class BazookaManager : MonoBehaviour
 
     public void Load()
     {
-        string path = Path.Join(Application.persistentDataPath, "save.dat");
+        string path = Path.Join(Application.persistentDataPath, "save.json");
         if (!File.Exists(path))
         {
             File.Create(path).Dispose();
@@ -74,7 +74,7 @@ public class BazookaManager : MonoBehaviour
 #if UNITY_EDITOR
         return;
 #else
-        string path = Path.Join(Application.persistentDataPath, "save.dat");
+        string path = Path.Join(Application.persistentDataPath, "save.json");
         var encoded = Encoding.UTF8.GetBytes(saveFile.ToString());
         using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
         fileStream.Write(encoded, 0, encoded.Length);
