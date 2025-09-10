@@ -10,6 +10,8 @@ TagManager:
   - UltraBerry
   - SpeedyBerry
   - TimeSlowBerry
+  - PurpleBerry
+  - TimeFreezeBerry
   layers:
   - Default
   - TransparentFX
