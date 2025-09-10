@@ -492,4 +492,22 @@ public class BazookaManager : MonoBehaviour
         if (saveFile["gameStore"] == null) return;
         (saveFile["gameStore"] as JObject)?.Remove("totalPurpleBerries");
     }
+    public void SetGameStoreTotalTimeFreezeBerries(BigInteger value)
+    {
+        if (saveFile["gameStore"] == null) saveFile["gameStore"] = new JObject();
+        saveFile["gameStore"]["totalTimeFreezeBerries"] = value.ToString();
+    }
+
+    public BigInteger GetGameStoreTotalTimeFreezeBerries()
+    {
+        if (saveFile["gameStore"] == null) return 0;
+        if (saveFile["gameStore"]["totalTimeFreezeBerries"] == null) return 0;
+        return BigInteger.Parse(saveFile["gameStore"]["totalTimeFreezeBerries"].ToString());
+    }
+
+    public void UnsetGameStoreTotalTimeFreezeBerries()
+    {
+        if (saveFile["gameStore"] == null) return;
+        (saveFile["gameStore"] as JObject)?.Remove("totalTimeFreezeBerries");
+    }
 }

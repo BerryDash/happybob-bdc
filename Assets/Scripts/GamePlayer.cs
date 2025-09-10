@@ -20,9 +20,11 @@ public class GamePlayer : MonoBehaviour
     private BigInteger totalSpeedyBerries;
     private BigInteger totalTimeSlowBerries;
     private BigInteger totalPurpleBerries;
+    private BigInteger totalTimeFreezeBerries;
     private BigInteger totalAttempts;
     private float boostLeft;
     private float timeslowLeft;
+    private float timefreezeLeft;
     private float slownessLeft;
     private float speedyLeft;
     private float screenWidth;
@@ -272,6 +274,11 @@ public class GamePlayer : MonoBehaviour
                 timeslowLeft -= Time.deltaTime;
                 boostText.text = "Time Slow expires in " + string.Format("{0:0.0}", timeslowLeft) + "s";
             }
+            else if (timefreezeLeft > 0f)
+            {
+                timefreezeLeft -= Time.deltaTime;
+                boostText.text = "Time Freeze expires in " + string.Format("{0:0.0}", timefreezeLeft) + "s";
+            }
             else
             {
                 boostText.text = "";
@@ -294,11 +301,13 @@ public class GamePlayer : MonoBehaviour
             nextSpawnTime = Time.time + 1f / spawnRate;
         }
         float spawnProbability = Random.value;
+        if ((int)timefreezeLeft != 0) return;
         if (!pausePanel.activeSelf)
         {
             GameObject newBerry = new("Berry");
             newBerry.transform.SetParent(berryParent.transform);
             SpriteRenderer spriteRenderer = newBerry.AddComponent<SpriteRenderer>();
+
             if (spawnProbability <= 0.525f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/Berry");
@@ -329,13 +338,16 @@ public class GamePlayer : MonoBehaviour
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/PurpleBerry");
                 newBerry.tag = "PurpleBerry";
             }
-            else
+            else if (spawnProbability <= 0.985f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/TimeSlowBerry");
                 newBerry.tag = "TimeSlowBerry";
             }
-
-
+            else
+            {
+                spriteRenderer.sprite = Resources.Load<Sprite>("Berries/TimeFreezeBerry");
+                newBerry.tag = "TimeFreezeBerry";
+            }
 
             spriteRenderer.sortingOrder = -5;
 
@@ -369,6 +381,7 @@ public class GamePlayer : MonoBehaviour
         GameObject[] speedyBerries = GameObject.FindGameObjectsWithTag("SpeedyBerry");
         GameObject[] timeslowBerries = GameObject.FindGameObjectsWithTag("TimeSlowBerry");
         GameObject[] purpleBerries = GameObject.FindGameObjectsWithTag("PurpleBerry");
+        GameObject[] timefreezeBerries = GameObject.FindGameObjectsWithTag("TimeFreezeBerry");
 
         if (!pausePanel.activeSelf)
         {
@@ -391,7 +404,12 @@ public class GamePlayer : MonoBehaviour
                     totalNormalBerries++;
                     UpdateStats(1, 0);
                 }
-                if (speedyLeft > 0)
+
+                if (timefreezeLeft > 0)
+                {
+                    normalBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
                 {
                     normalBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
                 }
@@ -401,10 +419,10 @@ public class GamePlayer : MonoBehaviour
                 }
                 else
                 {
-                    normalBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
+                    normalBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
-
             }
+
             foreach (GameObject poisonBerry in poisonBerries)
             {
                 if (poisonBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
@@ -418,7 +436,12 @@ public class GamePlayer : MonoBehaviour
                     totalPoisonBerries++;
                     UpdateStats(0, 0);
                 }
-                if (speedyLeft > 0)
+
+                if (timefreezeLeft > 0)
+                {
+                    poisonBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
                 {
                     poisonBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
                 }
@@ -428,9 +451,10 @@ public class GamePlayer : MonoBehaviour
                 }
                 else
                 {
-                    poisonBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
+                    poisonBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
             }
+
             foreach (GameObject slowBerry in slowBerries)
             {
                 if (slowBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
@@ -450,7 +474,12 @@ public class GamePlayer : MonoBehaviour
                         UpdateStats(-1, 0);
                     }
                 }
-                if (speedyLeft > 0)
+
+                if (timefreezeLeft > 0)
+                {
+                    slowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
                 {
                     slowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
                 }
@@ -460,9 +489,10 @@ public class GamePlayer : MonoBehaviour
                 }
                 else
                 {
-                    slowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
+                    slowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
             }
+
             foreach (GameObject ultraBerry in ultraBerries)
             {
                 if (ultraBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
@@ -487,7 +517,12 @@ public class GamePlayer : MonoBehaviour
                         UpdateStats(5, 0);
                     }
                 }
-                if (speedyLeft > 0)
+
+                if (timefreezeLeft > 0)
+                {
+                    ultraBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
                 {
                     ultraBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
                 }
@@ -497,9 +532,10 @@ public class GamePlayer : MonoBehaviour
                 }
                 else
                 {
-                    ultraBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
+                    ultraBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
             }
+
             foreach (GameObject speedyBerry in speedyBerries)
             {
                 if (speedyBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
@@ -517,7 +553,12 @@ public class GamePlayer : MonoBehaviour
                     totalSpeedyBerries++;
                     UpdateStats(10, 0);
                 }
-                if (speedyLeft > 0)
+
+                if (timefreezeLeft > 0)
+                {
+                    speedyBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
                 {
                     speedyBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
                 }
@@ -527,9 +568,10 @@ public class GamePlayer : MonoBehaviour
                 }
                 else
                 {
-                    speedyBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
+                    speedyBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
             }
+
             foreach (GameObject timeslowBerry in timeslowBerries)
             {
                 if (timeslowBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
@@ -546,7 +588,12 @@ public class GamePlayer : MonoBehaviour
                     totalTimeSlowBerries++;
                     UpdateStats(1, 0);
                 }
-                if (speedyLeft > 0)
+
+                if (timefreezeLeft > 0)
+                {
+                    timeslowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
                 {
                     timeslowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
                 }
@@ -556,9 +603,10 @@ public class GamePlayer : MonoBehaviour
                 }
                 else
                 {
-                    timeslowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);  
+                    timeslowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
             }
+
             foreach (GameObject purpleBerry in purpleBerries)
             {
                 if (purpleBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
@@ -572,7 +620,12 @@ public class GamePlayer : MonoBehaviour
                     totalPurpleBerries++;
                     UpdateStats(15, 0);
                 }
-                if (speedyLeft > 0)
+
+                if (timefreezeLeft > 0)
+                {
+                    purpleBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
                 {
                     purpleBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
                 }
@@ -585,6 +638,42 @@ public class GamePlayer : MonoBehaviour
                     purpleBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
             }
+
+            foreach (GameObject timefreezeBerry in timefreezeBerries)
+            {
+                if (timefreezeBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
+                {
+                    Destroy(timefreezeBerry);
+                }
+                else if (UnityEngine.Vector3.Distance(bird.transform.position, timefreezeBerry.transform.position) < 1.5f)
+                {
+                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/Eat"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
+                    Destroy(timefreezeBerry);
+                    boostLeft = 0f;
+                    speedyLeft = 0f;
+                    timeslowLeft = 0f;
+                    timefreezeLeft = 5f;
+                    totalTimeFreezeBerries++;
+                }
+
+                if (timefreezeLeft > 0)
+                {
+                    timefreezeBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
+                {
+                    timefreezeBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
+                }
+                else if (timeslowLeft > 0)
+                {
+                    timefreezeBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -2f);
+                }
+                else
+                {
+                    timefreezeBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
+                }
+            }
+
         }
         else
         {
@@ -597,6 +686,7 @@ public class GamePlayer : MonoBehaviour
                 .Concat(speedyBerries)
                 .Concat(timeslowBerries)
                 .Concat(purpleBerries)
+                .Concat(timefreezeBerries)
                 .ToArray();
             foreach (GameObject berry in allberries)
             {
@@ -615,6 +705,7 @@ public class GamePlayer : MonoBehaviour
         score = 0;
         boostLeft = 0f;
         timeslowLeft = 0f;
+        timefreezeLeft = 0f;
         slownessLeft = 0f;
         speedyLeft = 0f;
         UpdateStats(0, 1);
@@ -626,6 +717,7 @@ public class GamePlayer : MonoBehaviour
             .Concat(GameObject.FindGameObjectsWithTag("SpeedyBerry"))
             .Concat(GameObject.FindGameObjectsWithTag("TimeSlowBerry"))
             .Concat(GameObject.FindGameObjectsWithTag("PurpleBerry"))
+            .Concat(GameObject.FindGameObjectsWithTag("TimeFreezeBerry"))
             .ToArray();
         foreach (GameObject berry in allberries)
         {
