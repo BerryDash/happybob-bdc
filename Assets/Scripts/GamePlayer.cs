@@ -787,6 +787,8 @@ public class GamePlayer : MonoBehaviour
         BazookaManager.Instance.SetGameStoreTotalSpeedyBerries(totalSpeedyBerries);
         BazookaManager.Instance.SetGameStoreTotalTimeSlowBerries(totalTimeSlowBerries);
         BazookaManager.Instance.SetGameStoreTotalPurpleBerries(totalPurpleBerries);
+        BazookaManager.Instance.SetGameStoreTotalTimeFreezeBerries(totalTimeFreezeBerries);
+        BazookaManager.Instance.SetGameStoreTotalEvilBerries(totalEvilBerries);
         BazookaManager.Instance.SetGameStoreTotalAttepts(totalAttempts);
         scoreText.text = $"Score: {Tools.FormatWithCommas(score)} \\u2022 Attempts: {Tools.FormatWithCommas(attempts)}";
         highScoreText.text = $"High Score: {Tools.FormatWithCommas(highscore)} \\u2022 Total Attempts: {Tools.FormatWithCommas(totalAttempts)}";
