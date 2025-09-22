@@ -21,6 +21,7 @@ public class GamePlayer : MonoBehaviour
     private BigInteger totalTimeSlowBerries;
     private BigInteger totalPurpleBerries;
     private BigInteger totalTimeFreezeBerries;
+    private BigInteger totalEvilBerries;
     private BigInteger totalAttempts;
     private float boostLeft;
     private float timeslowLeft;
@@ -308,46 +309,52 @@ public class GamePlayer : MonoBehaviour
             newBerry.transform.SetParent(berryParent.transform);
             SpriteRenderer spriteRenderer = newBerry.AddComponent<SpriteRenderer>();
 
-            if (spawnProbability <= 0.525f)
+            if (spawnProbability <= 0.35f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/Berry");
                 newBerry.tag = "NormalBerry";
             }
-            else if (spawnProbability <= 0.65f)
+            else if (spawnProbability <= 0.50f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/PoisonBerry");
                 newBerry.tag = "PoisonBerry";
             }
-            else if (spawnProbability <= 0.75f)
+            else if (spawnProbability <= 0.60f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/SlowBerry");
                 newBerry.tag = "SlowBerry";
             }
-            else if (spawnProbability <= 0.85f)
+            else if (spawnProbability <= 0.70f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/UltraBerry");
                 newBerry.tag = "UltraBerry";
             }
-            else if (spawnProbability <= 0.94f)
+            else if (spawnProbability <= 0.80f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/SpeedyBerry");
                 newBerry.tag = "SpeedyBerry";
             }
-            else if (spawnProbability <= 0.97f)
+            else if (spawnProbability <= 0.85f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/PurpleBerry");
                 newBerry.tag = "PurpleBerry";
             }
-            else if (spawnProbability <= 0.985f)
+            else if (spawnProbability <= 0.90f)
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/TimeSlowBerry");
                 newBerry.tag = "TimeSlowBerry";
+            }
+            else if (spawnProbability <= 0.95f)
+            {
+                spriteRenderer.sprite = Resources.Load<Sprite>("Berries/EvilBerry");
+                newBerry.tag = "EvilBerry";
             }
             else
             {
                 spriteRenderer.sprite = Resources.Load<Sprite>("Berries/TimeFreezeBerry");
                 newBerry.tag = "TimeFreezeBerry";
             }
+
 
             spriteRenderer.sortingOrder = -5;
 
@@ -382,6 +389,7 @@ public class GamePlayer : MonoBehaviour
         GameObject[] timeslowBerries = GameObject.FindGameObjectsWithTag("TimeSlowBerry");
         GameObject[] purpleBerries = GameObject.FindGameObjectsWithTag("PurpleBerry");
         GameObject[] timefreezeBerries = GameObject.FindGameObjectsWithTag("TimeFreezeBerry");
+        GameObject[] evilBerries = GameObject.FindGameObjectsWithTag("EvilBerry");
 
         if (!pausePanel.activeSelf)
         {
@@ -673,8 +681,43 @@ public class GamePlayer : MonoBehaviour
                     timefreezeBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
             }
+            foreach (GameObject evilBerry in evilBerries)
+            {
+                if (evilBerry.transform.position.y < 0f - Camera.main.orthographicSize - 1f)
+                {
+                    Destroy(evilBerry);
+                }
+                else if (UnityEngine.Vector3.Distance(bird.transform.position, evilBerry.transform.position) < 1.5f)
+                {
+                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/Eat"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
+                    Destroy(evilBerry);
+                    totalEvilBerries++;
+                    if (score > 9)
+                    {
+                        UpdateStats(-10, 0);
+                    }
+                }
+
+                if (timefreezeLeft > 0)
+                {
+                    evilBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, 0f);
+                }
+                else if (speedyLeft > 0)
+                {
+                    evilBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -7.5f);
+                }
+                else if (timeslowLeft > 0)
+                {
+                    evilBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -2f);
+                }
+                else
+                {
+                    evilBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
+                }
+            }
 
         }
+
         else
         {
             rb.gravityScale = 0f;
@@ -687,6 +730,7 @@ public class GamePlayer : MonoBehaviour
                 .Concat(timeslowBerries)
                 .Concat(purpleBerries)
                 .Concat(timefreezeBerries)
+                .Concat(evilBerries)
                 .ToArray();
             foreach (GameObject berry in allberries)
             {
@@ -718,6 +762,7 @@ public class GamePlayer : MonoBehaviour
             .Concat(GameObject.FindGameObjectsWithTag("TimeSlowBerry"))
             .Concat(GameObject.FindGameObjectsWithTag("PurpleBerry"))
             .Concat(GameObject.FindGameObjectsWithTag("TimeFreezeBerry"))
+            .Concat(GameObject.FindGameObjectsWithTag("EvilBerry"))
             .ToArray();
         foreach (GameObject berry in allberries)
         {
