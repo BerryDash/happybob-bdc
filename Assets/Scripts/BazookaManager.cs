@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Numerics;
 using System.Text;
@@ -46,16 +47,35 @@ public class BazookaManager : MonoBehaviour
 
     public void Load()
     {
-        string path = Path.Join(Application.persistentDataPath, "save.json");
-        if (!File.Exists(path))
+        if (Application.platform != RuntimePlatform.WebGLPlayer)
         {
-            File.Create(path).Dispose();
+            string path = Path.Join(Application.persistentDataPath, "save.json");
+            if (!File.Exists(path))
+            {
+                File.Create(path).Dispose();
+            }
+            else
+            {
+                try
+                {
+                    var tempSaveFile = JObject.Parse(File.ReadAllText(path));
+                    if (tempSaveFile != null) saveFile = tempSaveFile;
+                }
+                catch
+                {
+                    Debug.LogWarning("Failed to load save file");
+                }
+            }
+            if (saveFile["version"] == null || saveFile["version"].ToString() != "0")
+            {
+                saveFile["version"] = "0";
+            }
         }
         else
         {
             try
             {
-                var tempSaveFile = JObject.Parse(File.ReadAllText(path));
+                var tempSaveFile = JObject.Parse(File.ReadAllText(Encoding.UTF8.GetString(Convert.FromBase64String(PlayerPrefs.GetString("saveFile", "e30=")))));
                 if (tempSaveFile != null) saveFile = tempSaveFile;
             }
             catch
@@ -63,24 +83,27 @@ public class BazookaManager : MonoBehaviour
                 Debug.LogWarning("Failed to load save file");
             }
         }
-        if (saveFile["version"] == null || saveFile["version"].ToString() != "0")
-        {
-            saveFile["version"] = "0";
-        }
     }
 
     public void Save()
     {
-#if UNITY_EDITOR
-        return;
-#else
-        string path = Path.Join(Application.persistentDataPath, "save.json");
-        var encoded = Encoding.UTF8.GetBytes(saveFile.ToString());
-        using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
-        fileStream.Write(encoded, 0, encoded.Length);
-        fileStream.Flush(true);
-#endif
-    }
+        #if UNITY_EDITOR
+            return;
+        #else
+            if (Application.platform != RuntimePlatform.WebGLPlayer)
+            {
+                string path = Path.Join(Application.persistentDataPath, "save.json");
+                var encoded = Encoding.UTF8.GetBytes(saveFile.ToString());
+                using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+                fileStream.Write(encoded, 0, encoded.Length);
+                fileStream.Flush(true);
+            }
+            else
+            {
+                PlayerPrefs.SetString("saveFile", Convert.ToBase64String(Encoding.UTF8.GetBytes(saveFile.ToString(Newtonsoft.Json.Formatting.None))));
+            }
+        #endif
+        }
 
     public void ResetSave()
     {
