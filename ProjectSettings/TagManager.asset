@@ -12,6 +12,7 @@ TagManager:
   - TimeSlowBerry
   - PurpleBerry
   - TimeFreezeBerry
+  - EvilBerry
   layers:
   - Default
   - TransparentFX
