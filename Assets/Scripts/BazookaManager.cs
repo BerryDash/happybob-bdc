@@ -13,6 +13,7 @@ public class BazookaManager : MonoBehaviour
     {
         ["version"] = "0"
     };
+    private JObject lastSaveFile = new();
 
     void Awake()
     {
@@ -32,17 +33,11 @@ public class BazookaManager : MonoBehaviour
         }
     }
 
-    void OnApplicationQuit()
+    void Update()
     {
-        Save();
-    }
-
-    void OnApplicationPause(bool pause)
-    {
-        if (pause)
-        {
-            Save();
-        }
+        if (Instance == null && !firstLoadDone) return;
+        if (!JToken.DeepEquals(saveFile, lastSaveFile)) Save();
+        lastSaveFile = saveFile;
     }
 
     public void Load()
@@ -59,7 +54,11 @@ public class BazookaManager : MonoBehaviour
                 try
                 {
                     var tempSaveFile = JObject.Parse(File.ReadAllText(path));
-                    if (tempSaveFile != null) saveFile = tempSaveFile;
+                    if (tempSaveFile != null)
+                    {
+                        saveFile = tempSaveFile;
+                        lastSaveFile = tempSaveFile;
+                    }
                 }
                 catch
                 {
@@ -76,7 +75,12 @@ public class BazookaManager : MonoBehaviour
             try
             {
                 var tempSaveFile = JObject.Parse(File.ReadAllText(Encoding.UTF8.GetString(Convert.FromBase64String(PlayerPrefs.GetString("saveFile", "e30=")))));
-                if (tempSaveFile != null) saveFile = tempSaveFile;
+                if (tempSaveFile != null)
+                {
+                    saveFile = tempSaveFile;
+                    lastSaveFile = tempSaveFile;
+                }
+                Debug.Log(tempSaveFile.ToString());
             }
             catch
             {
