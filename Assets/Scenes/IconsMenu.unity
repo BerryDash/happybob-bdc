@@ -6610,7 +6610,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 758ebe16766e7814e98ddca093b4fc08, type: 3}
+  m_Sprite: {fileID: -3126026722721351652, guid: a9364cc2010a1ff4896e0a3e953333a6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6952,6 +6952,7 @@ MonoBehaviour:
   - {fileID: 578398309}
   - {fileID: 449287749}
   - {fileID: 2075607391}
+  - {fileID: 1587568823}
   overlays:
   - {fileID: 437256206}
   - {fileID: 388694500}
@@ -9455,7 +9456,7 @@ GameObject:
   - component: {fileID: 1587568824}
   - component: {fileID: 1587568823}
   m_Layer: 5
-  m_Name: Icon (1)
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

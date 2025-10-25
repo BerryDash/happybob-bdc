@@ -588,7 +588,7 @@ public class GamePlayer : MonoBehaviour
                 }
                 else if (UnityEngine.Vector3.Distance(bird.transform.position, timeslowBerry.transform.position) < 1.5f)
                 {
-                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/Eat"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
+                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/SlowMotion"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
                     Destroy(timeslowBerry);
                     boostLeft = 0f;
                     speedyLeft = 0f;
@@ -610,7 +610,7 @@ public class GamePlayer : MonoBehaviour
                     timeslowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -2f);
                 }
                 else
-                {
+                {   
                     timeslowBerry.GetComponent<Rigidbody2D>().linearVelocity = new UnityEngine.Vector2(0f, -4f);
                 }
             }
@@ -655,7 +655,7 @@ public class GamePlayer : MonoBehaviour
                 }
                 else if (UnityEngine.Vector3.Distance(bird.transform.position, timefreezeBerry.transform.position) < 1.5f)
                 {
-                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/Eat"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
+                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/TimeStop"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
                     Destroy(timefreezeBerry);
                     boostLeft = 0f;
                     speedyLeft = 0f;
@@ -689,7 +689,7 @@ public class GamePlayer : MonoBehaviour
                 }
                 else if (UnityEngine.Vector3.Distance(bird.transform.position, evilBerry.transform.position) < 1.5f)
                 {
-                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/Eat"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
+                    AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/EvilLaugh"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
                     Destroy(evilBerry);
                     totalEvilBerries++;
                     if (score > 9)
