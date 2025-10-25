@@ -513,6 +513,7 @@ public class GamePlayer : MonoBehaviour
                     Destroy(ultraBerry);
                     totalUltraBerries++;
                     timeslowLeft = 0f;
+                    timefreezeLeft = 0f;
                     speedyLeft = 0f;
                     if (slownessLeft > 0f)
                     {
@@ -557,6 +558,7 @@ public class GamePlayer : MonoBehaviour
                     boostLeft = 0f;
                     slownessLeft = 0f;
                     timeslowLeft = 0f;
+                    timefreezeLeft = 0f;
                     speedyLeft = 10f;
                     totalSpeedyBerries++;
                     UpdateStats(10, 0);
@@ -591,6 +593,8 @@ public class GamePlayer : MonoBehaviour
                     AudioSource.PlayClipAtPoint(Resources.Load<AudioClip>("Sounds/SlowMotion"), Camera.main.transform.position, 1.2f * BazookaManager.Instance.GetSettingSFXVolume());
                     Destroy(timeslowBerry);
                     boostLeft = 0f;
+                    timeslowLeft = 0f;
+                    timefreezeLeft = 0f;
                     speedyLeft = 0f;
                     timeslowLeft = 10f;
                     totalTimeSlowBerries++;
@@ -659,6 +663,7 @@ public class GamePlayer : MonoBehaviour
                     Destroy(timefreezeBerry);
                     boostLeft = 0f;
                     speedyLeft = 0f;
+                    slownessLeft = 0f;
                     timeslowLeft = 0f;
                     timefreezeLeft = 5f;
                     totalTimeFreezeBerries++;
