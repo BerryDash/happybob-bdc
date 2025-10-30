@@ -1,15 +1,11 @@
-using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Iconsmenu : MonoBehaviour
 {
     public GameObject iconsPanel;
     public GameObject overlaysPanel;
-    public Button backButton;
     public Sprite defaultIcon;
     public Button placeholderButton;
     public TMP_Text selectionText;
@@ -52,7 +48,6 @@ public class Iconsmenu : MonoBehaviour
             }
         };
 
-        defaultIcon = Tools.GetIconForUser(BazookaManager.Instance.GetAccountID() ?? 0);
         icons[0].transform.GetChild(0).GetComponent<Image>().sprite = defaultIcon;
 
         SwitchToIcon();
@@ -65,10 +60,6 @@ public class Iconsmenu : MonoBehaviour
             placeholderButton.interactable = false;
         }
         placeholderButton.onClick.AddListener(ToggleKit);
-        backButton.onClick.AddListener(async () =>
-        {
-            await SceneManager.LoadSceneAsync("MainMenu");
-        });
         previewBird.GetComponentInParent<Button>().onClick.AddListener(() =>
         {
             var scale = previewBird.transform.localScale;
@@ -149,7 +140,7 @@ public class Iconsmenu : MonoBehaviour
         {
             previewBird.sprite = defaultIcon;
         }
-        if (iconID == 7)
+        if (iconID == 7 || iconID == 10 || iconID == 12 || iconID == 13)
         {
             SelectOverlay(0);
             placeholderButton.interactable = false;

@@ -78,4 +78,10 @@ public static class Tools
         Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new UnityEngine.Vector2(0.5f, 0.5f));
         targetImage.sprite = sprite;
     }
+
+    public static void RefreshHierarchy(GameObject root)
+    {
+        foreach (Transform child in root.transform) RefreshHierarchy(child.gameObject);
+        if (root.TryGetComponent<RectTransform>(out var rect)) LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+    }
 }

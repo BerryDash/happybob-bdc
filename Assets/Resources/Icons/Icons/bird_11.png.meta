@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f755766365ccb9522b11a8c3ad5ca4ad
+guid: 22d2dafbf26954366a494f62f7c24799
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2782012579205326331
-    second: bird_-4_0
+      213: 906397254961933930
+    second: bird_11_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -110,24 +110,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -139,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bird_-4_0
+      name: bird_11_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 6
         y: 0
-        width: 128
-        height: 128
+        width: 119
+        height: 101
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 50a5cc78c4e4469d0800000000000000
-      internalID: -2782012579205326331
+      spriteID: a6e2567408b249c00800000000000000
+      internalID: 906397254961933930
       vertices: []
       indices: 
       edges: []
@@ -164,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8fe06886b08afa4a0803a236bdb16bc0
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      bird_-4_0: -2782012579205326331
+      bird_11_0: 906397254961933930
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

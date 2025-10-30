@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 758ebe16766e7814e98ddca093b4fc08
+guid: a73bede85ca8a4c0aaf14630da3a8720
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2677233606436270692
-    second: Berry (1)_0
+      213: -1847764790897192605
+    second: bird_12_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -110,19 +110,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -139,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Berry (1)_0
+      name: bird_12_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 128
+        x: 7
+        y: 3
+        width: 114
+        height: 122
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4623f5cc7c1772520800000000000000
-      internalID: 2677233606436270692
+      spriteID: 361591a66bb6b56e0800000000000000
+      internalID: -1847764790897192605
       vertices: []
       indices: 
       edges: []
@@ -164,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 0c855207cb76e484b94e8e4cba9306e3
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Berry (1)_0: 2677233606436270692
+      bird_12_0: -1847764790897192605
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

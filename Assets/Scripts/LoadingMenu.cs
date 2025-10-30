@@ -5,10 +5,12 @@ public class LoadingMenu : MonoBehaviour
 {
     async void Start()
     {
-        QualitySettings.vSyncCount = BazookaManager.Instance.GetSettingVsync() ? 1 : -1;
         if (!Application.isMobilePlatform)
         {
-            Screen.fullScreen = BazookaManager.Instance.GetSettingFullScreen();
+            var width = Display.main.systemWidth;
+            var height = Display.main.systemHeight;
+            Screen.SetResolution(width, height, BazookaManager.Instance.GetSettingFullScreen());
+            QualitySettings.vSyncCount = BazookaManager.Instance.GetSettingVsync() ? 1 : -1;
         }
         else
         {

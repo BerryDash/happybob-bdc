@@ -22,6 +22,15 @@ AudioImporter:
       quality: 1
       conversionMode: 0
       preloadAudioData: 0
+    WebGL:
+      serializedVersion: 2
+      loadType: 2
+      sampleRateSetting: 2
+      sampleRateOverride: 44100
+      compressionFormat: 7
+      quality: 0.59999996
+      conversionMode: 0
+      preloadAudioData: 0
   forceToMono: 0
   normalize: 1
   loadInBackground: 0

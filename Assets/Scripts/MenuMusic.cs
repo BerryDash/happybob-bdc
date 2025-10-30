@@ -26,7 +26,7 @@ public class MenuMusic : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "GamePlayer")
+        if (scene.name == "GamePlayer" || scene.name == "CustomGamePlayer")
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
             Destroy(gameObject);

@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Numerics;
 using System.Text;
@@ -13,7 +12,6 @@ public class BazookaManager : MonoBehaviour
     {
         ["version"] = "0"
     };
-    private JObject lastSaveFile = new();
 
     void Awake()
     {
@@ -33,81 +31,55 @@ public class BazookaManager : MonoBehaviour
         }
     }
 
-    void Update()
+    void OnApplicationQuit()
     {
-        if (Instance == null && !firstLoadDone) return;
-        if (!JToken.DeepEquals(saveFile, lastSaveFile)) Save();
-        lastSaveFile = saveFile;
+        Save();
+    }
+
+    void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            Save();
+        }
     }
 
     public void Load()
     {
-        if (Application.platform != RuntimePlatform.WebGLPlayer)
+        string path = Path.Join(Application.persistentDataPath, "save.json");
+        if (!File.Exists(path))
         {
-            string path = Path.Join(Application.persistentDataPath, "save.json");
-            if (!File.Exists(path))
-            {
-                File.Create(path).Dispose();
-            }
-            else
-            {
-                try
-                {
-                    var tempSaveFile = JObject.Parse(File.ReadAllText(path));
-                    if (tempSaveFile != null)
-                    {
-                        saveFile = tempSaveFile;
-                        lastSaveFile = tempSaveFile;
-                    }
-                }
-                catch
-                {
-                    Debug.LogWarning("Failed to load save file");
-                }
-            }
-            if (saveFile["version"] == null || saveFile["version"].ToString() != "0")
-            {
-                saveFile["version"] = "0";
-            }
+            File.Create(path).Dispose();
         }
         else
         {
             try
             {
-                var tempSaveFile = JObject.Parse(File.ReadAllText(Encoding.UTF8.GetString(Convert.FromBase64String(PlayerPrefs.GetString("saveFile", "e30=")))));
-                if (tempSaveFile != null)
-                {
-                    saveFile = tempSaveFile;
-                    lastSaveFile = tempSaveFile;
-                }
-                Debug.Log(tempSaveFile.ToString());
+                saveFile = JObject.Parse(File.ReadAllText(path));
             }
             catch
             {
                 Debug.LogWarning("Failed to load save file");
             }
         }
+        if (saveFile["version"] == null || saveFile["version"].ToString() != "0")
+        {
+            saveFile["version"] = "0";
+        }
     }
 
     public void Save()
     {
-        #if UNITY_EDITOR
-            return;
-        #else
-            if (Application.platform != RuntimePlatform.WebGLPlayer)
-            {
-                string path = Path.Join(Application.persistentDataPath, "save.json");
-                var encoded = Encoding.UTF8.GetBytes(saveFile.ToString());
-                using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
-                fileStream.Write(encoded, 0, encoded.Length);
-                fileStream.Flush(true);
-            }
-            else
-            {
-                PlayerPrefs.SetString("saveFile", Convert.ToBase64String(Encoding.UTF8.GetBytes(saveFile.ToString(Newtonsoft.Json.Formatting.None))));
-            }
-        #endif
-        }
+#if UNITY_EDITOR
+        return;
+#else
+        string path = Path.Join(Application.persistentDataPath, "save.json");
+        var encoded = Encoding.UTF8.GetBytes(saveFile.ToString());
+        using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None);
+        fileStream.Write(encoded, 0, encoded.Length);
+        fileStream.Flush(true);
+#endif
+    }
 
     public void ResetSave()
     {
@@ -201,6 +173,19 @@ public class BazookaManager : MonoBehaviour
         return bool.Parse(saveFile["settings"]["vsync"].ToString());
     }
 
+    public void SetSettingRandomMusic(bool value)
+    {
+        if (saveFile["settings"] == null) saveFile["settings"] = new JObject();
+        saveFile["settings"]["randomMusic"] = value;
+    }
+
+    public bool GetSettingRandomMusic()
+    {
+        if (saveFile["settings"] == null) return true;
+        if (saveFile["settings"]["randomMusic"] == null) return true;
+        return bool.Parse(saveFile["settings"]["randomMusic"].ToString());
+    }
+
     public void SetSettingMusicVolume(float value)
     {
         if (saveFile["settings"] == null) saveFile["settings"] = new JObject();
@@ -240,6 +225,66 @@ public class BazookaManager : MonoBehaviour
         if (saveFile["settings"]["colors"] == null) return new JArray(58, 58, 58);
         if (saveFile["settings"]["colors"]["background"] == null) return new JArray(58, 58, 58);
         return JArray.Parse(saveFile["settings"]["colors"]["background"].ToString());
+    }
+
+    public void SetColorSettingMenuBackground(JArray value)
+    {
+        if (saveFile["settings"] == null) saveFile["settings"] = new JObject();
+        if (saveFile["settings"]["colors"] == null) saveFile["settings"]["colors"] = new JObject();
+        saveFile["settings"]["colors"]["menuBackground"] = value;
+    }
+
+    public JArray GetColorSettingMenuBackground()
+    {
+        if (saveFile["settings"] == null) return new JArray(24, 24, 24);
+        if (saveFile["settings"]["colors"] == null) return new JArray(24, 24, 24);
+        if (saveFile["settings"]["colors"]["menuBackground"] == null) return new JArray(24, 24, 24);
+        return JArray.Parse(saveFile["settings"]["colors"]["menuBackground"].ToString());
+    }
+
+    public void SetColorSettingButton(JArray value)
+    {
+        if (saveFile["settings"] == null) saveFile["settings"] = new JObject();
+        if (saveFile["settings"]["colors"] == null) saveFile["settings"]["colors"] = new JObject();
+        saveFile["settings"]["colors"]["button"] = value;
+    }
+
+    public JArray GetColorSettingButton()
+    {
+        if (saveFile["settings"] == null) return new JArray(255, 255, 255);
+        if (saveFile["settings"]["colors"] == null) return new JArray(255, 255, 255);
+        if (saveFile["settings"]["colors"]["button"] == null) return new JArray(255, 255, 255);
+        return JArray.Parse(saveFile["settings"]["colors"]["button"].ToString());
+    }
+
+    public void SetColorSettingText(JArray value)
+    {
+        if (saveFile["settings"] == null) saveFile["settings"] = new JObject();
+        if (saveFile["settings"]["colors"] == null) saveFile["settings"]["colors"] = new JObject();
+        saveFile["settings"]["colors"]["text"] = value;
+    }
+
+    public JArray GetColorSettingText()
+    {
+        if (saveFile["settings"] == null) return new JArray(255, 255, 255);
+        if (saveFile["settings"]["colors"] == null) return new JArray(255, 255, 255);
+        if (saveFile["settings"]["colors"]["text"] == null) return new JArray(255, 255, 255);
+        return JArray.Parse(saveFile["settings"]["colors"]["text"].ToString());
+    }
+
+    public void SetColorSettingButtonContent(JArray value)
+    {
+        if (saveFile["settings"] == null) saveFile["settings"] = new JObject();
+        if (saveFile["settings"]["colors"] == null) saveFile["settings"]["colors"] = new JObject();
+        saveFile["settings"]["colors"]["buttonColor"] = value;
+    }
+
+    public JArray GetColorSettingButtonContent()
+    {
+        if (saveFile["settings"] == null) return new JArray(0, 0, 0);
+        if (saveFile["settings"]["colors"] == null) return new JArray(0, 0, 0);
+        if (saveFile["settings"]["colors"]["buttonColor"] == null) return new JArray(0, 0, 0);
+        return JArray.Parse(saveFile["settings"]["colors"]["buttonColor"].ToString());
     }
 
     public void SetColorSettingIcon(JArray value)
@@ -286,65 +331,6 @@ public class BazookaManager : MonoBehaviour
         if (saveFile["settings"]["colors"] == null) return;
         if (saveFile["settings"]["colors"]["overlay"] == null) return;
         (saveFile["settings"]["colors"] as JObject)?.Remove("overlay");
-    }
-
-    //Account stuff
-
-    public void SetAccountSession(string value)
-    {
-        if (saveFile["account"] == null) saveFile["account"] = new JObject();
-        saveFile["account"]["session"] = value;
-    }
-
-    public string GetAccountSession()
-    {
-        if (saveFile["account"] == null) return null;
-        if (saveFile["account"]["session"] == null) return null;
-        return saveFile["account"]["session"].ToString();
-    }
-
-    public void UnsetAccountSession()
-    {
-        if (saveFile["account"] == null) return;
-        (saveFile["account"] as JObject)?.Remove("session");
-    }
-
-    public void SetAccountName(string value)
-    {
-        if (saveFile["account"] == null) saveFile["account"] = new JObject();
-        saveFile["account"]["name"] = value;
-    }
-
-    public string GetAccountName()
-    {
-        if (saveFile["account"] == null) return null;
-        if (saveFile["account"]["name"] == null) return null;
-        return saveFile["account"]["name"].ToString();
-    }
-
-    public void UnsetAccountName()
-    {
-        if (saveFile["account"] == null) return;
-        (saveFile["account"] as JObject)?.Remove("name");
-    }
-
-    public void SetAccountID(BigInteger value)
-    {
-        if (saveFile["account"] == null) saveFile["account"] = new JObject();
-        saveFile["account"]["id"] = value.ToString();
-    }
-
-    public BigInteger? GetAccountID()
-    {
-        if (saveFile["account"] == null) return null;
-        if (saveFile["account"]["id"] == null) return null;
-        return BigInteger.Parse(saveFile["account"]["id"].ToString());
-    }
-
-    public void UnsetAccountID()
-    {
-        if (saveFile["account"] == null) return;
-        (saveFile["account"] as JObject)?.Remove("id");
     }
 
     //Game store stuff
@@ -480,6 +466,63 @@ public class BazookaManager : MonoBehaviour
     {
         if (saveFile["gameStore"] == null) return;
         (saveFile["gameStore"] as JObject)?.Remove("totalSpeedyBerries");
+    }
+
+    public void SetGameStoreTotalCoinBerries(BigInteger value)
+    {
+        if (saveFile["gameStore"] == null) saveFile["gameStore"] = new JObject();
+        saveFile["gameStore"]["totalCoinBerries"] = value.ToString();
+    }
+
+    public BigInteger GetGameStoreTotalCoinBerries()
+    {
+        if (saveFile["gameStore"] == null) return 0;
+        if (saveFile["gameStore"]["totalCoinBerries"] == null) return 0;
+        return BigInteger.Parse(saveFile["gameStore"]["totalCoinBerries"].ToString());
+    }
+
+    public void UnsetGameStoreTotalCoinBerries()
+    {
+        if (saveFile["gameStore"] == null) return;
+        (saveFile["gameStore"] as JObject)?.Remove("totalCoinBerries");
+    }
+
+    public void SetGameStoreTotalRandomBerries(BigInteger value)
+    {
+        if (saveFile["gameStore"] == null) saveFile["gameStore"] = new JObject();
+        saveFile["gameStore"]["totalRandomBerries"] = value.ToString();
+    }
+
+    public BigInteger GetGameStoreTotalRandomBerries()
+    {
+        if (saveFile["gameStore"] == null) return 0;
+        if (saveFile["gameStore"]["totalRandomBerries"] == null) return 0;
+        return BigInteger.Parse(saveFile["gameStore"]["totalRandomBerries"].ToString());
+    }
+
+    public void UnsetGameStoreTotalRandomBerries()
+    {
+        if (saveFile["gameStore"] == null) return;
+        (saveFile["gameStore"] as JObject)?.Remove("totalRandomBerries");
+    }
+
+    public void SetGameStoreTotalAntiBerries(BigInteger value)
+    {
+        if (saveFile["gameStore"] == null) saveFile["gameStore"] = new JObject();
+        saveFile["gameStore"]["totalAntiBerries"] = value.ToString();
+    }
+
+    public BigInteger GetGameStoreTotalAntiBerries()
+    {
+        if (saveFile["gameStore"] == null) return 0;
+        if (saveFile["gameStore"]["totalAntiBerries"] == null) return 0;
+        return BigInteger.Parse(saveFile["gameStore"]["totalAntiBerries"].ToString());
+    }
+
+    public void UnsetGameStoreTotalAntiBerries()
+    {
+        if (saveFile["gameStore"] == null) return;
+        (saveFile["gameStore"] as JObject)?.Remove("totalAntiBerries");
     }
 
     public void SetGameStoreTotalTimeSlowBerries(BigInteger value)

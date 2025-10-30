@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1e7009ed594b8a141bf1490044918b36
+guid: 2d55aa022a76c49db95fade4d94908ef
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2472076170658201133
-    second: image (18)_0
+      213: 8597839283746861073
+    second: bird_9_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -110,24 +110,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
     buildTarget: iOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -139,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: image (18)_0
+      name: bird_9_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 6
         y: 0
-        width: 128
-        height: 128
+        width: 119
+        height: 101
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3d1c53602db61bdd0800000000000000
-      internalID: -2472076170658201133
+      spriteID: 11071a77649a15770800000000000000
+      internalID: 8597839283746861073
       vertices: []
       indices: 
       edges: []
@@ -164,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 31756e0b3a04b79428125356cc577588
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -174,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      image (18)_0: -2472076170658201133
+      bird_9_0: 8597839283746861073
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
